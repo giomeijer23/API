@@ -1,0 +1,57 @@
+/* Gymshark kleurenschema */
+.bg-gymshark {
+    background-color: #0A0A0A;
+}
+.text-gymshark {
+    color: #00AEEF;
+}
+.border-gymshark {
+    border-color: #00AEEF;
+}
+
+/* Algemene stijlen */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+button {
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00AEEF;
+}
+
+/* Oefening lijst */
+#exercise-list li {
+    cursor: pointer;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+#exercise-list li:hover {
+    transform: translateY(-3px);
+}
+
+/* Oefening detail */
+#exercise-detail h2 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #00AEEF;
+    margin-bottom: 1rem;
+}
+
+#exercise-detail p {
+    margin-bottom: 0.5rem;
+}
