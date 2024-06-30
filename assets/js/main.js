@@ -8,8 +8,16 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 
 // Event listeners toevoegen aan de knoppen
-prevBtn.addEventListener('click', prevPage);
-nextBtn.addEventListener('click', nextPage);
+prevBtn.addEventListener('click', () => {
+  if (offset > 0) {
+    offset -= limit;
+    fetchExercises(offset); // Fetch de vorige pagina
+  }
+});
+nextBtn.addEventListener('click', () => {
+  offset += limit;
+  fetchExercises(offset); // Fetch de volgende pagina
+});
 
 async function fetchExercises(offset) {
   try {
@@ -39,18 +47,6 @@ function displayExercises(exercises) {
     });
     exerciseList.appendChild(li);
   });
-}
-
-async function prevPage() {
-  if (offset > 0) {
-    offset -= limit;
-    await fetchExercises(offset);
-  }
-}
-
-async function nextPage() {
-  offset += limit;
-  await fetchExercises(offset);
 }
 
 // Initial fetch
