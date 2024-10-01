@@ -1,5 +1,4 @@
-const apiUrl = 'https://api.api-ninjas.com/v1/exercises';
-const apiKey = 'zqEoEzvLqtdEVp8K6t0Q0w==u4fd1WFHy3a3Kt4D';
+const apiUrl = 'https://spapi.dev/api/characters';
 const limit = 10;
 let offset = 0;
 
@@ -11,43 +10,54 @@ const nextBtn = document.getElementById('nextBtn');
 prevBtn.addEventListener('click', () => {
   if (offset > 0) {
     offset -= limit;
-    fetchExercises(offset); // Fetch de vorige pagina
+    fetchCharacters(offset); // Fetch de vorige pagina
   }
 });
 nextBtn.addEventListener('click', () => {
   offset += limit;
-  fetchExercises(offset); // Fetch de volgende pagina
+  fetchCharacters(offset); // Fetch de volgende pagina
 });
 
-async function fetchExercises(offset) {
+async function fetchCharacters(offset) {
   try {
-    const response = await fetch(`${apiUrl}?offset=${offset}&limit=${limit}`, {
-      headers: {
-        'X-Api-Key': apiKey
+      const response = await fetch(`${apiUrl}?offset=${offset}&limit=${limit}`);
+      if (!response.ok) {
+          throw new Error(`Error fetching characters: ${response.statusText}`);
       }
-    });
-    if (!response.ok) {
-      throw new Error(`Error fetching exercises: ${response.statusText}`);
-    }
-    const exercises = await response.json();
-    displayExercises(exercises);
+      const apiResponse = await response.json();
+      console.log(apiResponse); // Log de volledige API-response
+      displayCharacters(apiResponse); // Geef de data door aan de displayCharacters functie
   } catch (error) {
-    console.error('Error fetching exercises:', error);
+      console.error('Error fetching characters:', error);
   }
 }
 
-function displayExercises(exercises) {
+function displayCharacters(apiResponse) {
+  const characters = apiResponse.data || [];
+
   exerciseList.innerHTML = '';
-  exercises.forEach(exercise => {
-    const li = document.createElement('li');
-    li.classList.add('cursor-pointer', 'hover:underline', 'bg-white', 'p-4', 'rounded-lg', 'shadow');
-    li.textContent = exercise.name;
-    li.addEventListener('click', () => {
-      window.location.href = `exercise.html?name=${encodeURIComponent(exercise.name)}`;
-    });
-    exerciseList.appendChild(li);
+  characters.forEach(character => {
+      // Controleer of het character object een 'name' heeft
+      if (!character.name) {
+          console.error('Character does not have a name property', character);
+          return; // Sla dit character over als het geen name heeft
+      }
+
+      const li = document.createElement('li');
+      li.classList.add('cursor-pointer', 'hover:underline', 'bg-white', 'p-4', 'rounded-lg', 'shadow');
+      li.textContent = character.name;
+      li.addEventListener('click', () => {
+          // Controleer nogmaals voordat je het karakter doorgeeft aan de volgende pagina
+          if (character.name) {
+              window.location.href = `southPark.html?name=${encodeURIComponent(character.name)}`;
+          } else {
+              console.error('Character name is undefined:', character);
+          }
+      });
+      exerciseList.appendChild(li);
   });
 }
 
+
 // Initial fetch
-fetchExercises(offset);
+fetchCharacters(offset);
